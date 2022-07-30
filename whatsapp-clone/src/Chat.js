@@ -2,15 +2,31 @@ import React, { useState, useEffect} from 'react';
 import "./Chat.css";
 import { Avatar, IconButton } from '@material-ui/core';
 import { AttachFile, MoreVert, SearchOutlined } from "@material-ui/icons";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import MicIcon from "@material-ui/icons/Mic";
+// import axios from "./axios";
 
 function Chat() {
 
     const [seed, setSeed] = useState("");
+    const [input, setInput] = useState("");    
 
     useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
     }, []);    
 
+
+const sendMessage = async (e) => {
+    e.preventDefault();
+
+    // await axios.post("/messages/new", {
+    //     message: input,
+    //     name: "Aniket",
+    //     timestamp: "Just now",
+    //     received: false
+    // });
+    // setInput("");
+};
 
   return (
     <div className='chat'>
@@ -45,6 +61,19 @@ function Chat() {
             <span className="chat_timestamp">3.54pm</span>
         </p>
       </div>
+
+
+      <div className='chat_footer'>
+            <InsertEmoticonIcon />
+            <form>
+                <input 
+                value={input} 
+                onChange={(e) => setInput(e.target.value)} 
+                placeholder='Type a message' type="text"/>
+                <button onClick={sendMessage} type='submit'>Send a message</button>
+            </form>
+            <MicIcon />
+        </div>
 
 
     </div>
