@@ -27,7 +27,7 @@ const createChat = () => {
 
 
   return !addNewChat ? (
-    <Link to={`/rooms/${id}`}>
+     <Link to={`/rooms/${id}`}>
   <div className='sidebarChat'>
       <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
       <div className='sidebarChat_info'>
@@ -35,7 +35,7 @@ const createChat = () => {
         <p>This is the last message</p>
       </div>
     </div>
-    </Link>
+     </Link> 
   ) : (
     <div onClick={createChat} className='sidebarChat'>
         <h2>Add new Chat</h2>

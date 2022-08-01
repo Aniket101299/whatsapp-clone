@@ -14,18 +14,24 @@ function Chat() {
     const [input, setInput] = useState("");    
     const { roomId } = useParams();
     const [roomName, setRoomName] = useState("");
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
     if(roomId) {
         db.collection("rooms").doc(roomId).onSnapshot((snapshot) => (
             setRoomName(snapshot.data().name)
-        ))
+        ));
+
+        db.collection("rooms").doc(roomId).collection("messages")
+        .orderBy("timestamp", "asc").onSnapshot( (snapshot) => (
+            setMessages(snapshot.docs.map(doc => doc.data()))
+         ))
     }
     }, [roomId]);
 
     useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
-    }, []);    
+    }, [roomId]);    
 
 
 const sendMessage = async (e) => {
@@ -37,7 +43,7 @@ const sendMessage = async (e) => {
     //     timestamp: "Just now",
     //     received: false
     // });
-    // setInput("");
+    setInput("");
 };
 
   return (
@@ -64,14 +70,16 @@ const sendMessage = async (e) => {
       </div>
 
       <div className="chat_body">
+        {messages.map((message) => (
         <p 
         // className='chat_message chat_receiver'
         className={`chat_message ${true && "chat_receiver"}`}
         >
-            <span className="chat_name">ani</span>
-            hello
-            <span className="chat_timestamp">3.54pm</span>
+            <span className="chat_name">{message.name}</span>
+            {message.message}
+            <span className="chat_timestamp">{new Date(message.timestamp?.toDate()).toUTCString}</span>
         </p>
+        ))}
       </div>
 
 

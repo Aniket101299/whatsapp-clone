@@ -7,11 +7,13 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { SearchOutlined } from "@material-ui/icons";
 import SidebarChat from './SidebarChat';
 import db from './firebase';
+import { useStateValue } from "./StateProvider";
 
 
 function Sidebar() {
 
     const [rooms, setRooms] = useState([]);
+    const [{user}, dispatch] = useStateValue();
 
     useEffect(() => {
      const unsubscribe = db.collection("rooms").onSnapshot((snapshot) => 
@@ -34,7 +36,8 @@ function Sidebar() {
   return (
     <div className="sidebar">
         <div className='sidebar_header'>
-        <Avatar src="https://tse3.mm.bing.net/th?id=OIP.OJMH1q9cS-AFG308T5O_PQHaLH&pid=Api&P=0"/>
+        {/* "https://tse3.mm.bing.net/th?id=OIP.OJMH1q9cS-AFG308T5O_PQHaLH&pid=Api&P=0" */}
+        <Avatar src={user?.photoURL} />
       <div className='sidebar_headerRight'>
         <IconButton>
         <DonutLargeIcon />
@@ -57,6 +60,7 @@ function Sidebar() {
 
       <div className='sidebar_chats'>
         <SidebarChat addNewChat />
+    
         {rooms.map((room) => (
             <SidebarChat key={room.id} id={room.id}
             name={room.data.name} />
@@ -68,3 +72,8 @@ function Sidebar() {
 }
 
 export default Sidebar;
+
+
+
+
+
